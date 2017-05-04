@@ -30,6 +30,7 @@ void Carro::esperaEncher() {
 }
 
 void Carro::daUmaVolta() {
+    while(*lock1);
     fprintf(stderr, "Dando uma volta...\n");
     sleep(5);
     __sync_lock_release(lock2);
