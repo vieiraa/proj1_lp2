@@ -26,8 +26,8 @@ int main() {
         passageiro[i] = new Passageiro(carro, (i+1));
         passageiro[i]->start();
         passageiro[i]->setLocks(&lock1, &lock2, &lock3);
-        ticket += i;
         passageiro[i]->setValores(&ticket, &senha);
+        ticket++;
     }
     
     carro.run();
