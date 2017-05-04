@@ -13,17 +13,26 @@
 
 class Passageiro: public Thread {
 public:
-	Passageiro(Carro &c);
+	Passageiro(Carro &c, int);
 	virtual ~Passageiro();
 	void entraNoCarro();
 	void esperaVoltaAcabar();
 	void saiDoCarro();
 	void passeiaPeloParque();
 	bool parqueFechado();
-
+    void setValores(int *, int *);
+    void setLocks(bool *, bool *, bool *);
+    int getMyId();
+    
 	void run();
 private:
 	Carro &carro;
+    bool *lock1;
+    bool *lock2;
+    bool *lock3;
+    int *ticket;
+    int *senha;
+    int myId;
 };
 
 #endif /* PASSAGEIRO_H_ */
