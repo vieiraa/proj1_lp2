@@ -30,6 +30,7 @@ public:
     void saiPassageiro();
 	Parque &getParque();
     void setLocks(bool *, bool *, bool *);
+    void setSenha(int *);
 	void run();
 private:
 	static int capacidade;
@@ -38,6 +39,7 @@ private:
     bool *lock1;
     bool *lock2;
     bool *lock3;
+    int *senha;
 	Parque &parque;
 };
 

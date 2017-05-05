@@ -12,30 +12,28 @@ bool lock2 = false;
 bool lock3 = false;
 
 int ticket = 1;
-int  senha = 1;
+int  senha = 0;
 
 int main() {
     Parque parque(NUM_THREADS);
     Carro carro(parque);
     Passageiro *passageiro[NUM_THREADS];
     
-    carro.start();
     carro.setLocks(&lock1, &lock2, &lock3);
     
     for(int i = 0; i < NUM_THREADS; i++) {
         passageiro[i] = new Passageiro(carro, (i+1));
-        passageiro[i]->start();
         passageiro[i]->setLocks(&lock1, &lock2, &lock3);
         passageiro[i]->setValores(&ticket, &senha);
-        ticket++;
     }
     
-    carro.run();
+    carro.start();
     
     for(int i = 0; i < NUM_THREADS; i++)
-        passageiro[i]->run();
+        passageiro[i]->start();
     
-    carro.join();
+    for(int i = 0; i < NUM_THREADS; i++)
+        passageiro[i]->join();
     
 	return 0;
 }

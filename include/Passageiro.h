@@ -32,6 +32,7 @@ private:
     bool *lock3;
     int *ticket;
     int *senha;
+    int myTicket;
     int myId;
 };
 

@@ -25,12 +25,11 @@ Carro::~Carro() {
 }
 
 void Carro::esperaEncher() {
-    while(__sync_lock_test_and_set(lock1, 1));
     fprintf(stderr, "Esperando encher...\n");
+    while(__sync_lock_test_and_set(lock1, 1));
 }
 
 void Carro::daUmaVolta() {
-    while(*lock1);
     fprintf(stderr, "Dando uma volta...\n");
     sleep(5);
     __sync_lock_release(lock2);
@@ -67,7 +66,12 @@ void Carro::setLocks(bool *lock1, bool *lock2, bool *lock3) {
     this->lock3 = lock3;
 }
 
+void Carro::setSenha(int *senha) {
+    this->senha = senha;
+}
+
 void Carro::run() {
+    __sync_fetch_and_add(senha, 1);
 	while (parque.getNumPassageiros() > 0) {
 		esperaEncher();
 

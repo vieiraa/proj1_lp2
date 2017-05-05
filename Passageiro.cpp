@@ -41,15 +41,15 @@ void Passageiro::saiDoCarro() {
     if(carro.getNPassageiros() == 1) {
         carro.saiPassageiro();
         __sync_lock_release(lock3);
+        return;
     }
 
     carro.saiPassageiro();
 }
 
 void Passageiro::passeiaPeloParque() {
-    /* __sync_fetch_and_add(ticket, 1); */
+    __sync_fetch_and_add(senha, 1);
     fprintf(stderr, "Passageiro %d vegetando...\n", getMyId());
-    /* __sync_fetch_and_add(senha, 1); */
     sleep(10);
 }
 
@@ -76,12 +76,11 @@ int Passageiro::getMyId() {
 }
 
 void Passageiro::run() {
-
-    __sync_fetch_and_add(senha, 1);
 	while (!parqueFechado()) {
-
-        while(*ticket != *senha)
-            fprintf(stderr, "Passageiro %d tentando entrar com %d = %d...\n", getMyId(), *ticket, *senha);;
+        myTicket = __sync_fetch_and_add(ticket, 1);
+        
+        while(myTicket != *senha);
+//          fprintf(stderr, "Passageiro %d tentando entrar com %d = %d...\n", getMyId(), myTicket, *senha);
 
 		entraNoCarro(); // protocolo de entrada
 
@@ -94,4 +93,3 @@ void Passageiro::run() {
 
 	// decrementa o numero de passageiros no parque
 }
-
