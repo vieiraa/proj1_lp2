@@ -22,13 +22,17 @@ Passageiro::~Passageiro() {
 
 void Passageiro::entraNoCarro() {
     fprintf(stderr, "Passageiro %d entrando no carro...\n", getMyId());
-    if(carro.getNPassageiros() == 0) {
+    
+    if(carro.getNPassageiros() == 4) {
         carro.entraPassageiro();
-        __sync_lock_release(lock1);
+        *lock1 = 0;
         return;
     }
-
-    carro.entraPassageiro();
+    else {
+        carro.entraPassageiro();
+        __sync_fetch_and_add(senha, 1);
+        while(*lock1)fprintf(stderr, "Passageiro %d...\n", getMyId());
+    }
 }
 
 void Passageiro::esperaVoltaAcabar() {
@@ -37,18 +41,21 @@ void Passageiro::esperaVoltaAcabar() {
 }
 
 void Passageiro::saiDoCarro() {
-    fprintf(stderr, "Passageiro %d saindo do relampago marquinhos...\n", getMyId());
+    fprintf(stderr, "Passageiro %d saindo do relampago marquinhos...", getMyId());
     if(carro.getNPassageiros() == 1) {
+        fprintf(stderr, "why\n");
         carro.saiPassageiro();
-        __sync_lock_release(lock3);
+        *lock3 = 0;
+        __sync_fetch_and_add(senha, 1);
         return;
     }
-
+    
     carro.saiPassageiro();
+    fprintf(stderr, "total agora de passageiros %d\n\n\n\n...", carro.getNPassageiros());
+    while(*lock3);
 }
 
 void Passageiro::passeiaPeloParque() {
-    __sync_fetch_and_add(senha, 1);
     fprintf(stderr, "Passageiro %d vegetando...\n", getMyId());
     sleep(10);
 }
@@ -65,7 +72,7 @@ void Passageiro::setValores(int *ticket, int *senha) {
     this->senha  = senha;
 }
 
-void Passageiro::setLocks(bool *lock1, bool *lock2, bool *lock3) {
+void Passageiro::setLocks(int *lock1, int *lock2, int *lock3) {
     this->lock1 = lock1;
     this->lock2 = lock2;
     this->lock3 = lock3;
@@ -78,9 +85,9 @@ int Passageiro::getMyId() {
 void Passageiro::run() {
 	while (!parqueFechado()) {
         myTicket = __sync_fetch_and_add(ticket, 1);
-        
+
         while(myTicket != *senha);
-//          fprintf(stderr, "Passageiro %d tentando entrar com %d = %d...\n", getMyId(), myTicket, *senha);
+            fprintf(stderr, "Passageiro %d tentando entrar com %d = %d...\n", getMyId(), myTicket, *senha);
 
 		entraNoCarro(); // protocolo de entrada
 

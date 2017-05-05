@@ -3,13 +3,13 @@
 #include "include/Passageiro.h"
 #include "include/Parque.h"
 
-#define NUM_THREADS 2
+#define NUM_THREADS 10
 
 using namespace std;
 
-bool lock1 = false;
-bool lock2 = false;
-bool lock3 = false;
+int lock1 = 0;
+int lock2 = 0;
+int lock3 = 0;
 
 int ticket = 1;
 int  senha = 0;
@@ -33,8 +33,7 @@ int main() {
     for(int i = 0; i < NUM_THREADS; i++)
         passageiro[i]->start();
     
-    for(int i = 0; i < NUM_THREADS; i++)
-        passageiro[i]->join();
+    carro.join();
     
 	return 0;
 }

@@ -29,16 +29,16 @@ public:
     void entraPassageiro();
     void saiPassageiro();
 	Parque &getParque();
-    void setLocks(bool *, bool *, bool *);
+    void setLocks(int *, int *, int *);
     void setSenha(int *);
 	void run();
 private:
 	static int capacidade;
 	int voltas;
 	int nPassageiros;
-    bool *lock1;
-    bool *lock2;
-    bool *lock3;
+    int *lock1;
+    int *lock2;
+    int *lock3;
     int *senha;
 	Parque &parque;
 };
