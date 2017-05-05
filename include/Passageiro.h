@@ -21,15 +21,15 @@ public:
 	void passeiaPeloParque();
 	bool parqueFechado();
     void setValores(int *, int *);
-    void setLocks(int *, int *, int *);
+    void setLocks(bool *, bool *, bool *);
     int getMyId();
     
 	void run();
 private:
 	Carro &carro;
-    int *lock1;
-    int *lock2;
-    int *lock3;
+    bool *lock1;
+    bool *lock2;
+    bool *lock3;
     int *ticket;
     int *senha;
     int myTicket;

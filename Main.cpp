@@ -3,13 +3,13 @@
 #include "include/Passageiro.h"
 #include "include/Parque.h"
 
-#define NUM_THREADS 10
+#define NUM_THREADS 2
 
 using namespace std;
 
-int lock1 = 0;
-int lock2 = 0;
-int lock3 = 0;
+bool lock1 = false;
+bool lock2 = false;
+bool lock3 = false;
 
 int ticket = 1;
 int  senha = 0;
