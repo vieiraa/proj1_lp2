@@ -25,18 +25,19 @@ Carro::~Carro() {
 }
 
 void Carro::esperaEncher() {
-    fprintf(stderr, "Esperando encher...\n");
+    //fprintf(stderr, "Esperando encher...\n");
     while(__sync_lock_test_and_set(lock1, 1));
 }
 
 void Carro::daUmaVolta() {
-    fprintf(stderr, "Dando uma volta...\n");
+    //fprintf(stderr, "Dando uma volta...\n");
     sleep(5);
-    __sync_lock_release(lock2);
+    //__sync_lock_release(lock1);
+    *lock1 = 0;
 }
 
 void Carro::esperaEsvaziar() {
-    fprintf(stderr, "Esperando esvaziar...\n");
+    //fprintf(stderr, "Esperando esvaziar...\n");
     while(__sync_lock_test_and_set(lock3, 1));
 }
 

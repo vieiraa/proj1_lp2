@@ -22,33 +22,43 @@ Passageiro::~Passageiro() {
 
 void Passageiro::entraNoCarro() {
     fprintf(stderr, "Passageiro %d entrando no carro...\n", getMyId());
-    if(carro.getNPassageiros() == 0) {
+    if(carro.getNPassageiros() == 4) {
         carro.entraPassageiro();
-        __sync_lock_release(lock1);
-        return;
+        //__sync_lock_release(lock1);
+        *lock1 = 0;
+        //return;
     }
 
-    carro.entraPassageiro();
+    else {
+        carro.entraPassageiro();
+        __sync_fetch_and_add(senha, 1);
+    
+        while(*lock1);
+    }
 }
 
 void Passageiro::esperaVoltaAcabar() {
     fprintf(stderr, "Passageiro %d esperando volta acabar...\n", getMyId());
-    while(__sync_lock_test_and_set(lock2, 1));
+    while(__sync_lock_test_and_set(lock1, 1));
 }
 
 void Passageiro::saiDoCarro() {
     fprintf(stderr, "Passageiro %d saindo do relampago marquinhos...\n", getMyId());
     if(carro.getNPassageiros() == 1) {
         carro.saiPassageiro();
-        __sync_lock_release(lock3);
-        return;
-    }
 
-    carro.saiPassageiro();
+        //__sync_lock_release(lock3);
+        *lock3 = 0;
+                    __sync_fetch_and_add(senha, 1);
+    }
+    
+    else {
+        carro.saiPassageiro();
+        while (*lock3);
+    }
 }
 
 void Passageiro::passeiaPeloParque() {
-    __sync_fetch_and_add(senha, 1);
     fprintf(stderr, "Passageiro %d vegetando...\n", getMyId());
     sleep(10);
 }

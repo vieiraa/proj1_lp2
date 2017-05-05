@@ -3,7 +3,7 @@
 #include "include/Passageiro.h"
 #include "include/Parque.h"
 
-#define NUM_THREADS 2
+#define NUM_THREADS 10
 
 using namespace std;
 
