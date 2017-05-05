@@ -20,6 +20,7 @@ int main() {
     Passageiro *passageiro[NUM_THREADS];
     
     carro.setLocks(&lock1, &lock2, &lock3);
+    carro.setSenha(&senha);
     
     for(int i = 0; i < NUM_THREADS; i++) {
         passageiro[i] = new Passageiro(carro, (i+1));
