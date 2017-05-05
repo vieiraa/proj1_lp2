@@ -47,9 +47,9 @@ void Passageiro::saiDoCarro() {
 }
 
 void Passageiro::passeiaPeloParque() {
-    __sync_fetch_and_add(ticket, 1);
+    /* __sync_fetch_and_add(ticket, 1); */
     fprintf(stderr, "Passageiro %d vegetando...\n", getMyId());
-    __sync_fetch_and_add(senha, 1);
+    /* __sync_fetch_and_add(senha, 1); */
     sleep(10);
 }
 
@@ -76,6 +76,8 @@ int Passageiro::getMyId() {
 }
 
 void Passageiro::run() {
+
+    __sync_fetch_and_add(senha, 1);
 	while (!parqueFechado()) {
 
         while(*ticket != *senha)
